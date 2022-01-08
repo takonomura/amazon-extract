@@ -16,4 +16,9 @@ with open(sys.argv[1], 'rb') as stream:
         for item in data['OwnershipData']['items']:
             items.append(item)
 
-print(json.dumps(items))
+def get_sort_key(item):
+    return item['sortableTitle']
+items.sort(key=get_sort_key)
+
+for item in items:
+    print(json.dumps(item))

@@ -3,6 +3,7 @@ import json
 from warcio.archiveiterator import ArchiveIterator
 
 items = []
+exists = []
 
 with open(sys.argv[1], 'rb') as stream:
     for record in ArchiveIterator(stream):
@@ -14,7 +15,9 @@ with open(sys.argv[1], 'rb') as stream:
         if not 'OwnershipData' in data:
             continue
         for item in data['OwnershipData']['items']:
-            items.append(item)
+            if not item['asin'] in exists:
+                items.append(item)
+                exists.append(item['asin'])
 
 def get_sort_key(item):
     return item['sortableTitle']
